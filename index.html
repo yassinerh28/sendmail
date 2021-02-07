@@ -7,16 +7,25 @@
     <title>test</title>
 </head>
 <body>
-    <p id="paragraph"></p>
-<script>
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://localhost/test/send.php", true);
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState === 4 || this.status === 200){ 
-            console.log(this.responseText);
+        <label for="message"></label>
+        <textarea name="message" id="message" cols="30" rows="10"></textarea>
+        <button onclick="send_message()">Submit</button>
+    <p id="paragraph" onclick="send_message()"></p>
+    <script>
+        function send_message(params) {
+            var paragraph = document.getElementById("paragraph");
+            var message = document.getElementById("message").value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "./send.php", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState === 4 || this.status === 200){ 
+                    paragraph.innerHTML = this.responseText;
+                    console.log(this.responseText);
+                }       
+            };
+            xmlhttp.send("message=" + message);
         }
-    };
-    xmlhttp.send("hello");
-</script>
+    </script>
 </body>
 </html>
